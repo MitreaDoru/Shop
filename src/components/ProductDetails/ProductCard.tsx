@@ -4,8 +4,6 @@ import { add, increment, decrement } from "../../features/actions/cartSlice";
 import type { AppDispatch } from "../../app/store";
 import { selectCart } from "../../features/actions/actionsSelectors";
 import type { Product } from "../../types/product";
-import dotenv from "dotenv";
-dotenv.config();
 function ProductCard({ item }: { item: Product }) {
   const cart = useSelector(selectCart);
   const dispatch = useDispatch<AppDispatch>();
