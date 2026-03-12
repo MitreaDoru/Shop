@@ -17,7 +17,7 @@ function ProductCard({ item }: { item: Product }) {
         style={{ textDecoration: "none", display: "block" }}
       >
         <img
-          src={`${process.env.PUBLIC_URL}/assets/${item.image}`}
+          src={`./assets/${item.image}`}
           alt={item.name}
           style={{ cursor: "pointer", display: "block" }}
           width={200}
