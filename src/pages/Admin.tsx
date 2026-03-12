@@ -52,7 +52,7 @@ const InputsCalculator: React.FC = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/product", {
+      const response = await fetch("https://candle-1.onrender.com/product", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

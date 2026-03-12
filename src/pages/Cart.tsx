@@ -24,7 +24,7 @@ function Cart() {
     .map((item) => item.price * item.quantity)
     .reduce((total, price) => total + price, 0);
   const sendHandler = () => {
-    fetch("http://localhost:5000/cart", {
+    fetch("https://candle-uqyt.onrender.com/cart", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

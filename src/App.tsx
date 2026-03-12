@@ -35,7 +35,7 @@ function App() {
 
     if (!token) return;
 
-    fetch("http://localhost:5000/user", {
+    fetch("https://candle-uqyt.onrender.com/user", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -49,7 +49,7 @@ function App() {
       });
   }, [dispatch]);
   useEffect(() => {
-    fetch("http://localhost:5000/data")
+    fetch("https://candle-uqyt.onrender.com/data")
       .then((result) => result.json())
       .then((data) => {
         dispatch(addProduct(data.products));
