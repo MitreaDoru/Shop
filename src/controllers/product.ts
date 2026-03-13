@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { ProductRequest, Item } from "../types/productTypes";
 import Product from "../models/product";
 import Ingredients from "../models/ingredients";
+import { Ingredient } from "../types/ingredient";
 
 export const createProduct = async (
   req: Request<{}, {}, ProductRequest>,
@@ -15,13 +16,13 @@ export const createProduct = async (
         alert: {
           title: "Validation Error",
           message: "Product name is required",
-        },      
+        },
       });
       return;
     }
-
+    console.log(items);
     const price = items.reduce(
-      (sum: number, item: Item) => sum + item.value * item.multiplier,
+      (sum: number, item: Ingredient) => sum + item.value * item.multiplier,
       0,
     );
 
@@ -32,7 +33,7 @@ export const createProduct = async (
       quantity: 0,
       ingredients: items,
     });
-    const allIngredients = ingredients.map((item: Item) => ({
+    const allIngredients = ingredients.map((item: Ingredient) => ({
       ...item,
       multiplier: 0,
     }));
