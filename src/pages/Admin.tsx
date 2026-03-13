@@ -4,7 +4,7 @@ import {
   selectIngredients,
 } from "../features/actions/actionsSelectors";
 import { useDispatch, useSelector } from "react-redux";
-import type { Ingredient } from "../types/ingredients";
+import type { IngredientRecived, IngredientSent } from "../types/ingredients";
 import type { NewProduct } from "../types/product";
 import IngredientsList from "../components/ProductDetails/IngredientsList";
 import { alert, closeAlert } from "../features/actions/authSlice";
@@ -14,7 +14,7 @@ import Alert from "../components/ProductDetails/Alert";
 
 const InputsCalculator: React.FC = () => {
   const [listName, setListName] = useState("");
-  const [items, setItems] = useState<Ingredient[]>(
+  const [items, setItems] = useState<IngredientRecived[]>(
     useSelector(selectIngredients),
   );
   const dispatch = useDispatch<AppDispatch>();
@@ -23,7 +23,7 @@ const InputsCalculator: React.FC = () => {
   const addItem = () => {
     setItems([
       ...items,
-      { _id: String(new Date()), label: "", value: 0, multiplier: 0 },
+      { _id: crypto.randomUUID(), label: "", value: 0, multiplier: 0 },
     ]);
   };
 
@@ -44,14 +44,22 @@ const InputsCalculator: React.FC = () => {
     }
 
     const usedItems = items.filter((item) => item.multiplier > 0);
-
+    const cleanItems: IngredientSent[] = usedItems.map((item) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { _id, ...rest } = item;
+      return rest;
+    });
+    const cleanIngredients: IngredientSent[] = items.map((item) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { _id, ...rest } = item;
+      return rest;
+    });
     const product: NewProduct = {
       name: listName,
-      items: usedItems,
-      ingredients: items,
+      items: cleanItems,
+      ingredients: cleanIngredients,
       image: "candle-1.jpg",
     };
-    console.log(token);
     try {
       const response = await fetch("https://candle-1.onrender.com/product", {
         method: "POST",
@@ -62,12 +70,10 @@ const InputsCalculator: React.FC = () => {
         },
         body: JSON.stringify(product),
       });
-
       if (!response.ok) {
         throw new Error("Failed to save product");
       }
       const data = await response.json();
-      console.log(data.alert);
       dispatch(alert(data.alert));
       setTimeout(() => {
         dispatch(closeAlert());

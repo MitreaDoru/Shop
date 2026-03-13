@@ -1,4 +1,4 @@
-import type { Ingredient } from "./ingredients";
+import type { IngredientSent } from "./ingredients";
 
 export type Product = {
   _id: string;
@@ -6,11 +6,11 @@ export type Product = {
   image: string;
   price: number;
   quantity: number;
-  ingredients: Ingredient[];
+  ingredients: IngredientSent[];
 };
 export type NewProduct = {
   name: string;
   image: string;
-  items: Ingredient[];
-  ingredients: Ingredient[];
+  items: IngredientSent[];
+  ingredients: IngredientSent[];
 };
