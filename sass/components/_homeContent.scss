@@ -5,7 +5,6 @@
   grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
   gap: 2rem;
   padding: 2rem;
-
   justify-items: center;
 
   margin: 0 auto;
@@ -25,7 +24,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    background-color: $orange-2;
+    // background-color: $orange-2;
     a {
       width: 100%;
     }

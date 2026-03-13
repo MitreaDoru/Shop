@@ -16,7 +16,7 @@ function ProductCard({ item }: { item: Product }) {
         style={{ textDecoration: "none", display: "block" }}
       >
         <img
-          src={`./assets/${item.image}`}
+          src={`/Candle/assets/${item.image}`}
           alt={item.name}
           style={{ cursor: "pointer", display: "block" }}
           width={200}

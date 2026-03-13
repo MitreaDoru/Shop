@@ -1,7 +1,7 @@
 function Footer() {
   return (
     <footer className="footer">
-      <div className="footer-container">
+      {/* <div className="footer-container">
         <div className="footer-col">
           <h3>Glow Haven</h3>
           <p>
@@ -62,11 +62,9 @@ function Footer() {
           <h4>Address</h4>
           <p>123 Amber Street Suite 5 Brooklyn, NY 11201</p>
         </div>
-      </div>
+      </div> */}
 
-      <div className="footer-bottom">
-        © 2026 Glow Haven. All rights reserved.
-      </div>
+      <div className="footer-bottom">© 2026 DND. All rights reserved.</div>
     </footer>
   );
 }
