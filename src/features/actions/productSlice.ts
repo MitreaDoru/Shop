@@ -1,10 +1,10 @@
+import type { IngredientRecived } from "./../../types/ingredients";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Product } from "../../types/product";
-import type { Ingredient } from "../../types/ingredients";
 
 interface ActionsState {
   products: Product[];
-  ingredients: Ingredient[];
+  ingredients: IngredientRecived[];
 }
 
 const initialState: ActionsState = {
@@ -31,7 +31,7 @@ const productSlice = createSlice({
         (product) => product._id !== action.payload,
       );
     },
-    ingredients: (state, action: PayloadAction<Ingredient[]>) => {
+    ingredients: (state, action: PayloadAction<IngredientRecived[]>) => {
       state.ingredients = action.payload;
     },
   },

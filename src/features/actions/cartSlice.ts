@@ -1,5 +1,5 @@
+import type { IngredientRecived } from './../../types/ingredients';
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { Ingredient } from "../../types/ingredients";
 
 interface CartItem {
   _id: string;
@@ -7,7 +7,7 @@ interface CartItem {
   name: string;
   price: number;
   quantity: number;
-  ingredients: Ingredient[];
+  ingredients: IngredientRecived[];
 }
 interface CartState {
   items: CartItem[];
@@ -36,7 +36,7 @@ const cartSlice = createSlice({
         name: string;
         price: number;
         quantity: number;
-        ingredients: Ingredient[];
+        ingredients: IngredientRecived[];
       }>,
     ) => {
       const existingItem = state.items?.find(

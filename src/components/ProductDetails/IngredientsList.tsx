@@ -1,8 +1,8 @@
-import type { Ingredient } from "../../types/ingredients";
+import type { IngredientRecived } from "../../types/ingredients";
 interface IngredientsListProps {
-  item: Ingredient;
-  items: Ingredient[];
-  setItems: React.Dispatch<React.SetStateAction<Ingredient[]>>;
+  item: IngredientRecived;
+  items: IngredientRecived[];
+  setItems: React.Dispatch<React.SetStateAction<IngredientRecived[]>>;
 }
 const IngredientsList: React.FC<IngredientsListProps> = ({
   item,
