@@ -1,4 +1,5 @@
 @use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
 $product-primary: #6c63ff;
 $product-bg: #f4f6fb;
 $product-text: #2c2c2c;
@@ -16,13 +17,13 @@ $product-text: #2c2c2c;
 
 .product-hero {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 6rem;
   background: $white;
   padding: 5rem;
   border-radius: 2rem;
   box-shadow: 0 2rem 5rem $dark-1;
-  @media (min-width: 992px) {
+  @include tablet {
     grid-template-columns: 1fr 1fr;
     gap: 6rem;
     padding: 5rem;
@@ -31,6 +32,7 @@ $product-text: #2c2c2c;
 
 /* GALLERY */
 .gallery {
+  width: 100%;
   .main-image {
     width: 100%;
     border-radius: 1.6rem;
@@ -40,13 +42,13 @@ $product-text: #2c2c2c;
     display: flex;
     gap: 1.5rem;
     margin-top: 2rem;
-
+    width: 100%;
     img {
-      width: 10rem;
+      width: 33%;
       border-radius: 1.2rem;
       cursor: pointer;
       transition: 0.3s;
-      @media (min-width: 992px) {
+      @include laptop {
         grid-template-columns: 1fr 1fr;
         gap: 6rem;
         padding: 5rem;
@@ -69,7 +71,7 @@ $product-text: #2c2c2c;
   }
 
   .price {
-    font-size: 28px;
+    font-size: 2.8rem;
     font-weight: bold;
     color: $orange-1;
     margin-bottom: 2rem;
@@ -85,6 +87,7 @@ $product-text: #2c2c2c;
     display: flex;
     gap: 2rem;
     margin-bottom: 4rem;
+    padding: 0;
 
     button {
       padding: 1.4rem 2.8rem;
@@ -121,21 +124,28 @@ $product-text: #2c2c2c;
   padding: 4rem;
   border-radius: 2rem;
   box-shadow: 0 2rem 4rem $dark-1;
-  @media (min-width: 768px) {
+  @include tablet {
     padding: 4rem;
   }
   .tabs {
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 2rem;
     margin-bottom: 2rem;
+    @include mobile {
+      flex-direction: row;
+    }
     button {
       background: transparent;
       border: none;
       font-size: 1.6rem;
-      padding: 1rem 2rem;
+      padding: 1rem 0;
       cursor: pointer;
       position: relative;
-
+      @include mobile {
+        padding: 1rem 2rem;
+      }
       &.active {
         color: $orange-1;
         font-weight: 600;
@@ -171,7 +181,14 @@ $product-text: #2c2c2c;
 
     td:first-child {
       font-weight: 600;
-      width: 30%;
+      width: 50%;
+    }
+    td:nth-child(2) {
+      width: 50%;
+      text-align: end;
+      @include tablet {
+        text-align: start;
+      }
     }
   }
 

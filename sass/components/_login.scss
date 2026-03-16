@@ -1,4 +1,5 @@
 @use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
 
 .overlay {
   position: fixed;
@@ -8,8 +9,7 @@
   justify-content: center;
   align-items: flex-start;
   z-index: 1000;
-
-  @media (min-width: 480px) {
+  @include mobile {
     align-items: center;
   }
 }
@@ -22,8 +22,7 @@
   position: relative;
   box-shadow: 0 2rem 5rem $dark-1;
   animation: fadeIn 0.3s ease;
-
-  @media (min-width: 480px) {
+  @include mobile {
     padding: 4rem;
   }
 
@@ -35,7 +34,7 @@
     text-align: center;
 
     &:hover {
-      color: $orange-1;
+      transform: translateY(-2px);
     }
   }
 }
@@ -77,7 +76,7 @@
 .login-btn {
   width: 100%;
   padding: 1.4rem;
-  background: linear-gradient(135deg, $orange-2, $orange-1);
+  background: linear-gradient(135deg, $green-1, $orange-1);
   color: white;
   font-size: 1.6rem;
   border: none;

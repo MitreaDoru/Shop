@@ -1,3 +1,30 @@
+$mobile: 48rem; // 480px
+$tablet: 76rem; // 760px
+$laptop: 102rem; // 1020px
+$desktop: 128rem; // 1280px
+@mixin mobile {
+  @media (min-width: 480px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: 760px) {
+    @content;
+  }
+}
+
+@mixin laptop {
+  @media (min-width: 1020px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: 1280px) {
+    @content;
+  }
+}
 @mixin center {
   display: flex;
   align-items: center;

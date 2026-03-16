@@ -1,5 +1,5 @@
 @use "../abstracts/variables" as *;
-
+@use "../abstracts/mixins" as *;
 .content {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
@@ -9,8 +9,7 @@
 
   margin: 0 auto;
   width: 100%;
-
-  @media (min-width: 760px) {
+  @include tablet {
     padding: 2rem 5%;
   }
 
@@ -24,7 +23,6 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    // background-color: $orange-2;
     a {
       width: 100%;
     }
