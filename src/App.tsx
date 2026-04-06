@@ -9,7 +9,10 @@ import { addProduct, ingredients } from "./features/actions/productSlice";
 import type { AppDispatch } from "./app/store";
 import { useDispatch } from "react-redux";
 import AdminRoute from "./app/routes/AdminRoute";
-import { loginUser } from "./features/actions/authSlice";
+import { loginUser, logoutUser } from "./features/actions/authSlice";
+import ProductsContent from "./components/Products/ProductsContent";
+import OrdersPage from "./pages/Orders";
+import { useAuthCheck } from "./features/actions/useAuthCheck";
 const router = createBrowserRouter([
   {
     path: "/Candle",
@@ -18,6 +21,8 @@ const router = createBrowserRouter([
       { path: "/Candle", element: <HomeContent /> },
       { path: "/Candle/product/:id", element: <ProductDetails /> },
       { path: "/Candle/cart", element: <Cart /> },
+      { path: "/Candle/:category", element: <ProductsContent /> },
+      { path: "/Candle/orders", element: <OrdersPage /> },
 
       {
         element: <AdminRoute />,
@@ -30,40 +35,47 @@ const router = createBrowserRouter([
 function App() {
   const dispatch = useDispatch<AppDispatch>();
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const token = localStorage.getItem("token");
 
-    if (!token) return;
+  useAuthCheck();
 
-    fetch("https://candle-1.onrender.com/user", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((user) => {
-        dispatch(loginUser(user.user));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [dispatch]);
   useEffect(() => {
-    fetch("https://candle-1.onrender.com/data")
-      .then((result) => result.json())
-      .then((data) => {
+    const initAppData = async () => {
+      const token = localStorage.getItem("token");
+
+      try {
+        const dataRes = await fetch("http://localhost:5000/data");
+        const data = await dataRes.json();
         dispatch(addProduct(data.products));
         dispatch(ingredients(data.ingredients.ingredients));
+        if (token && token !== "null") {
+          const userRes = await fetch("http://localhost:5000/user", {
+            headers: { Authorization: `Bearer ${token.replace(/["]/g, "")}` },
+          });
+
+          if (userRes.ok) {
+            const userData = await userRes.json();
+            dispatch(loginUser(userData.user));
+          } else {
+            dispatch(logoutUser());
+          }
+        }
+      } catch (err) {
+        console.error("Initialization error:", err);
+      } finally {
         setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
+      }
+    };
+
+    initAppData();
   }, [dispatch]);
 
   if (loading) {
-    return <div className="content">Loading...</div>;
+    return (
+      <div className="loading">
+        <h3>Serverul pornește (host gratuit)... poate dura 15-30 secunde.</h3>
+        <h3>Loading......</h3>
+      </div>
+    );
   }
   return (
     <div className="app">

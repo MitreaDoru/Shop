@@ -1,16 +1,15 @@
 @use "../abstracts/variables" as *;
 @use "../abstracts/mixins" as *;
-$product-primary: #6c63ff;
-$product-bg: #f4f6fb;
-$product-text: #2c2c2c;
+@use "sass:color";
 
 .product-page {
-  background: $orange-2;
+  background-color: $white-1;
   min-height: 100vh;
-  padding: 6rem 0;
+  padding: 10rem 5% 5rem;
+  font-family: $font-main;
 
   .container {
-    max-width: 120rem;
+    max-width: 110rem;
     margin: 0 auto;
   }
 }
@@ -18,187 +17,171 @@ $product-text: #2c2c2c;
 .product-hero {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 6rem;
-  background: $white;
-  padding: 5rem;
-  border-radius: 2rem;
-  box-shadow: 0 2rem 5rem $dark-1;
-  @include tablet {
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
-    padding: 5rem;
-  }
-}
-
-/* GALLERY */
-.gallery {
-  width: 100%;
-  .main-image {
-    width: 100%;
-    border-radius: 1.6rem;
-  }
-
-  .thumbnails {
-    display: flex;
-    gap: 1.5rem;
-    margin-top: 2rem;
-    width: 100%;
-    img {
-      width: 33%;
-      border-radius: 1.2rem;
-      cursor: pointer;
-      transition: 0.3s;
-      @include laptop {
-        grid-template-columns: 1fr 1fr;
-        gap: 6rem;
-        padding: 5rem;
-      }
-      &:hover {
-        transform: scale(1.05);
-        border: 2px solid $orange-1;
-      }
-    }
-  }
-}
-
-.product-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  justify-content: center;
-  h1 {
-    margin-bottom: 1rem;
-  }
-
-  .price {
-    font-size: 2.8rem;
-    font-weight: bold;
-    color: $orange-1;
-    margin-bottom: 2rem;
-  }
-
-  .description {
-    font-size: 1.8rem;
-    color: $dark-3;
-    margin-bottom: 3rem;
-  }
-
-  .actions {
-    display: flex;
-    gap: 2rem;
-    margin-bottom: 4rem;
-    padding: 0;
-
-    button {
-      padding: 1.4rem 2.8rem;
-      border-radius: 1.2rem;
-      font-size: 1.6rem;
-      cursor: pointer;
-      border: none;
-      transition: 0.3s;
-    }
-
-    .btn-primary {
-      background: $orange-1;
-      color: white;
-
-      &:hover {
-        background-color: $orange-2;
-      }
-    }
-
-    .btn-secondary {
-      background: $white-1;
-
-      &:hover {
-        background: $white-2;
-      }
-    }
-  }
-}
-
-/* TAB CONTENT */
-.tab-content {
-  margin-top: 4rem;
-  background: white;
+  gap: 4rem;
+  background: $dark-1;
   padding: 4rem;
   border-radius: 2rem;
-  box-shadow: 0 2rem 4rem $dark-1;
+  box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.2);
+  color: $white;
+
   @include tablet {
-    padding: 4rem;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
   }
-  .tabs {
+
+  &__gallery {
+    width: 100%;
+    .product-hero__main-image {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 1.5rem;
+      box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  &__info {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 2rem;
-    margin-bottom: 2rem;
-    @include mobile {
-      flex-direction: row;
-    }
-    button {
-      background: transparent;
-      border: none;
-      font-size: 1.6rem;
-      padding: 1rem 0;
-      cursor: pointer;
-      position: relative;
-      @include mobile {
-        padding: 1rem 2rem;
-      }
-      &.active {
-        color: $orange-1;
-        font-weight: 600;
+    gap: 2.5rem;
 
-        &::after {
-          content: "";
-          position: absolute;
-          bottom: -5px;
-          left: 0;
-          width: 100%;
-          height: 3px;
-          background: $orange-1;
-          border-radius: 5px;
-        }
+    .product-hero__title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      color: $orange-1;
+    }
+
+    .product-hero__description {
+      font-size: 1.6rem;
+      line-height: 1.6;
+      color: $white;
+      opacity: 0.8;
+    }
+  }
+
+  &__actions {
+    margin-top: 2rem;
+  }
+
+  &__btn-add {
+    padding: 1.6rem 4rem;
+    background: $orange-1;
+    color: $white;
+    border: none;
+    border-radius: 1.2rem;
+    font-weight: 800;
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: $orange-2;
+      transform: translateY(-3px);
+      box-shadow: 0 1rem 2rem rgba($orange-1, 0.3);
+    }
+  }
+
+  &__quantity {
+    display: inline-flex;
+    align-items: center;
+    background: color.adjust($dark-1, $lightness: 5%);
+    padding: 0.6rem;
+    border-radius: 1.2rem;
+    border: 1px solid rgba($white, 0.1);
+
+    .product-hero__btn-qty {
+      width: 4rem;
+      height: 4rem;
+      @include center;
+      background: $orange-1;
+      color: $white;
+      border: none;
+      border-radius: 0.8rem;
+      font-size: 2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+
+      &:hover {
+        background: $orange-2;
+      }
+    }
+
+    .product-hero__count {
+      min-width: 6rem;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 800;
+    }
+  }
+}
+
+.product-tabs {
+  margin-top: 4rem;
+  background: $white;
+  border-radius: 2rem;
+  overflow: hidden;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.05);
+
+  &__nav {
+    display: flex;
+    background: $white-1;
+    border-bottom: 1px solid color.adjust($white-1, $lightness: -5%);
+  }
+
+  &__btn {
+    padding: 2rem 4rem;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $dark-3;
+    cursor: pointer;
+    position: relative;
+    transition: 0.3s;
+
+    &.is-active {
+      color: $orange-1;
+      background: $white;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: $orange-1;
       }
     }
   }
-  h2 {
-    margin-bottom: 2rem;
+
+  &__content {
+    padding: 4rem;
   }
-  p {
-    font-size: 1.5rem;
+
+  &__panel {
+    font-size: 1.6rem;
+    line-height: 1.8;
+    color: $dark-2;
   }
-  table {
+
+  &__table {
     width: 100%;
     border-collapse: collapse;
 
     td {
-      font-size: 1.5rem;
-      padding: 1.5rem;
+      padding: 1.5rem 0;
       border-bottom: 1px solid $white-1;
-    }
-
-    td:first-child {
-      font-weight: 600;
-      width: 50%;
-    }
-    td:nth-child(2) {
-      width: 50%;
-      text-align: end;
-      @include tablet {
-        text-align: start;
+      &:first-child {
+        font-weight: 700;
+        color: $dark-1;
       }
-    }
-  }
-
-  .review {
-    margin-bottom: 2rem;
-    font-size: 2.5rem;
-
-    span {
-      margin-left: 1rem;
-      color: gold;
+      &:last-child {
+        text-align: right;
+        color: $white-3;
+      }
     }
   }
 }

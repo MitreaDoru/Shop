@@ -1,69 +1,231 @@
+@use "sass:color";
 @use "../abstracts/variables" as *;
 @use "../abstracts/mixins" as *;
-header {
+
+.header {
   width: 100%;
-  padding: 1rem 2rem;
+  height: 6.9rem;
+  padding: 0 5%;
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid $dark-2;
-  flex-direction: column;
-  @include mobile {
-    flex-direction: row;
-  }
-  @include tablet {
-    flex-direction: row;
-    padding: 1rem 5%;
-  }
-  .left {
+  align-items: center;
+  border-bottom: 0.1rem solid $white-2;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: $white;
+  z-index: 1000;
+
+  &__logo {
     display: flex;
     align-items: center;
-    cursor: pointer;
+    gap: 1.2rem;
     text-decoration: none;
-    .name {
-      color: $dark-1;
-      font-size: 3rem;
-      font-family: $font-main;
+    z-index: 1002;
+    flex-shrink: 0;
+
+    &-img {
+      width: 4rem;
+      height: 4rem;
+      object-fit: contain;
     }
   }
-  .right {
+
+  &__brand {
+    color: $dark-1;
+    font-size: 2rem;
+    font-family: $font-main;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  &__burger {
     display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1002;
+    padding: 0.5rem;
+
+    @include tablet {
+      display: none;
+    }
+
+    &-line {
+      width: 2.8rem;
+      height: 0.3rem;
+      background-color: $dark-1;
+      transition: all 0.3s ease;
+      border-radius: 0.3rem;
+
+      &--open {
+        &:nth-child(1) {
+          transform: translateY(0.9rem) rotate(45deg);
+        }
+        &:nth-child(2) {
+          opacity: 0;
+        }
+        &:nth-child(3) {
+          transform: translateY(-0.9rem) rotate(-45deg);
+        }
+      }
+    }
+  }
+
+  &__nav {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100vh;
+    background-color: $white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+    transition: right 0.4s cubic-bezier(0.77, 0.2, 0.05, 1);
+    z-index: 1001;
+
+    &--active {
+      right: 0;
+    }
+
+    @include tablet {
+      position: static;
+      height: auto;
+      width: auto;
+      flex-direction: row;
+      background: transparent;
+      padding: 0;
+      gap: 3.5rem;
+      transition: none;
+      flex: 1;
+      justify-content: flex-end;
+    }
+  }
+
+  &__nav-list {
+    display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 3rem;
-    justify-content: flex-end;
-    .admin-panel {
-      a {
-        text-decoration: none;
-        color: $dark-1;
-        font-size: 3rem;
-      }
+
+    @include tablet {
+      flex-direction: row;
+      gap: 3.5rem;
+      margin-left: auto;
     }
-    .cart-icon {
-      position: relative;
-      cursor: pointer;
-      .cart-count {
-        position: absolute;
-        right: -4px;
-        top: -6px;
-        color: $dark-1;
-        width: 2rem;
-        height: 2rem;
-        text-align: center;
-        background-color: $white;
-        border-radius: 50%;
-        font-weight: 700;
-        font-size: 1.7rem;
-      }
+  }
+
+  &__nav-link {
+    text-decoration: none;
+    color: $dark-1;
+    font-family: $font-main;
+    font-weight: 500;
+    font-size: 2.2rem;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: $orange-1;
     }
-    .user {
-      cursor: pointer;
+
+    @include tablet {
+      font-size: 2rem;
     }
-    .btn-logout {
-      background: none;
-      border: none;
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+
+    @include tablet {
+      flex-direction: row;
+      gap: 3rem;
+    }
+  }
+
+  &__icon {
+    width: 2.8rem;
+    height: 2.8rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    display: block;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  &__cart {
+    position: relative;
+
+    &-link {
+      text-decoration: none;
+      display: block;
+    }
+
+    &-count {
+      position: absolute;
+      right: -0.8rem;
+      top: -0.8rem;
       color: $dark-1;
-      font-size: 3rem;
-      font-family: $font-main;
-      cursor: pointer;
+      background-color: $white;
+      width: 1.8rem;
+      height: 1.8rem;
+      border-radius: 50%;
+      @include center;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+  }
+
+  &__user {
+    @include center;
+    cursor: pointer;
+  }
+
+  &__auth-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    @include tablet {
+      flex-direction: row;
+      gap: 1.5rem;
+    }
+  }
+
+  &__btn {
+    padding: 0.8rem 1.6rem;
+    border-radius: 0.6rem;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    font-family: inherit;
+
+    &--logout {
+      background-color: $white-2;
+      color: $dark-1;
+      &:hover {
+        background-color: color.adjust($red-1, $lightness: -5%);
+        color: $white;
+      }
+    }
+
+    &--admin {
+      background-color: $dark-1;
+      color: $white;
+      &:hover {
+        background-color: $orange-1;
+      }
     }
   }
 }

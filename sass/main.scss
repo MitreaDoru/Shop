@@ -7,9 +7,12 @@
 
 @use "components/button";
 @use "components/homeContent";
+@use "components/productsContent";
 @use "components/popup";
 @use "components/login";
 @use "components/alert";
+@use "components/orders";
+@use "components/modal";
 @use "layout/header";
 @use "layout/footer";
 @use "pages/home";

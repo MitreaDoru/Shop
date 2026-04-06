@@ -1,63 +1,115 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { add, increment, decrement } from "../../features/actions/cartSlice";
+import {
+  add,
+  increment,
+  decrement,
+  remove,
+} from "../../features/actions/cartSlice";
 import type { AppDispatch } from "../../app/store";
-import { selectCart } from "../../features/actions/actionsSelectors";
+import {
+  selectCart,
+  selectUser,
+} from "../../features/actions/actionsSelectors";
 import type { Product } from "../../types/product";
+import { useState } from "react";
+import { deleteProduct } from "../../features/actions/productSlice";
 
 function ProductCard({ item }: { item: Product }) {
   const cart = useSelector(selectCart);
+  const user = useSelector(selectUser);
   const dispatch = useDispatch<AppDispatch>();
-  const existInCart = cart.filter((cartItem) => cartItem._id === item._id);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const existInCart = cart.find((cartItem) => cartItem._id === item._id);
+
+  const handleDelete = async () => {
+    const token = localStorage.getItem("token")?.replace(/["]/g, "");
+
+    try {
+      const response = await fetch(
+        `https://candle-1.onrender.com/product/${item._id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      if (response.ok) {
+        dispatch(deleteProduct(item._id));
+        dispatch(remove({ id: item._id }));
+
+        setShowConfirm(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="card">
-      <Link
-        to={`/Candle/product/${item._id}`}
-        style={{ textDecoration: "none", display: "block" }}
-      >
-        <img
-          src={`/Candle/assets/${item.image}`}
-          alt={item.name}
-          style={{ cursor: "pointer", display: "block" }}
-          width={200}
-          height={200}
-        />
+      {user?.isAdmin && (
+        <button
+          className="card__delete-btn"
+          onClick={() => setShowConfirm(true)}
+        >
+          &times;
+        </button>
+      )}
+
+      {showConfirm && (
+        <div className="card__confirm-overlay">
+          <div className="card__confirm-content">
+            <p>Ștergi definitiv produsul?</p>
+            <div className="card__confirm-actions">
+              <button onClick={handleDelete} className="card__btn-confirm">
+                Da
+              </button>
+              <button
+                onClick={() => setShowConfirm(false)}
+                className="card__btn-cancel"
+              >
+                Nu
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <Link to={`/Candle/product/${item._id}`} className="card__link">
+        <img src={`${item.image}`} alt={item.name} className="card__img" />
       </Link>
-      <div className="actions">
-        {(existInCart.length > 0 ? existInCart[0].quantity : 0) === 0 && (
+
+      <div className="card__actions">
+        {(!existInCart || existInCart.quantity === 0) && (
           <button
-            className="btn"
-            onClick={() => {
-              dispatch(add({ ...item, quantity: 1 }));
-            }}
+            className="card__add-btn"
+            onClick={() => dispatch(add({ ...item, quantity: 1 }))}
           >
-            Add to Cart
+            Adauga
           </button>
         )}
-        {(existInCart.length > 0 ? existInCart[0].quantity : 0) > 0 && (
-          <div className="quantity">
+
+        {existInCart && existInCart.quantity > 0 && (
+          <div className="card__quantity">
             <button
-              className="btn"
-              onClick={() => {
-                dispatch(decrement({ _id: item._id }));
-              }}
+              className="card__qty-btn"
+              onClick={() => dispatch(decrement({ _id: item._id }))}
             >
               -
             </button>
-            <p className="count">{`${existInCart.length > 0 ? existInCart[0].quantity : 0}`}</p>
+            <p className="card__count">{existInCart.quantity}</p>
             <button
-              className="btn"
-              onClick={() => {
-                dispatch(increment({ _id: item._id }));
-              }}
+              className="card__qty-btn"
+              onClick={() => dispatch(increment({ _id: item._id }))}
             >
               +
             </button>
           </div>
         )}
-        <p className="price">${item.price.toFixed(2)}</p>
       </div>
     </div>
   );
 }
+
 export default ProductCard;

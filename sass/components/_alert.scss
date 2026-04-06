@@ -1,15 +1,62 @@
 @use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
 .alert {
-  position: absolute;
-  top: 0;
+  position: fixed;
+  top: 2rem;
   left: 50%;
-  transform: translate(-50%, 0);
-  background: $orange-1;
-  color: $white-1;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  text-align: center;
-  opacity: 0;
-  animation: fadeIn 0.5s forwards;
+  transform: translateX(-50%);
+  z-index: 2000;
+  width: 90%;
+  max-width: 45rem;
+
+  &__content {
+    background-color: $orange-1;
+    color: $white-1;
+    padding: 2rem 3rem;
+    border-radius: 1rem;
+    box-shadow: 0 1rem 3rem rgba($dark-1, 0.3);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    animation: alertSlideDown 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+      forwards;
+  }
+
+  &__title {
+    font-family: $font-main;
+    color: $white;
+    margin-bottom: 0.5rem;
+  }
+
+  &__message {
+    color: $white-1;
+    font-weight: 400;
+  }
+
+  &__progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 0.4rem;
+    background-color: rgba($white, 0.3);
+    width: 100%;
+  }
+}
+
+@keyframes alertSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@include mobile {
+  .alert {
+    width: auto;
+    min-width: 35rem;
+  }
 }

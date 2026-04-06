@@ -2,17 +2,19 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { User } from "../../types/user";
 
 interface ActionsState {
-  user: User;
+  user: User | null;
   alert: {
     title: string;
     message: string;
     showAlert: boolean;
   };
+  mode: string;
 }
 
 const initialState: ActionsState = {
-  user: { email: "", password: "", isAdmin: false },
+  user: null,
   alert: { title: "", message: "", showAlert: false },
+  mode: "login",
 };
 const authSlice = createSlice({
   name: "auth",
@@ -34,10 +36,15 @@ const authSlice = createSlice({
     },
     logoutUser: (state) => {
       localStorage.removeItem("token");
-      state.user = { email: "", password: "", isAdmin: false };
+      state.user = null;
+      state.mode = "login";
+    },
+    switchMode: (state) => {
+      state.mode = state.mode === "login" ? "signup" : "login";
     },
   },
 });
 
-export const { loginUser, logoutUser, alert, closeAlert } = authSlice.actions;
+export const { loginUser, logoutUser, alert, closeAlert, switchMode } =
+  authSlice.actions;
 export default authSlice.reducer;

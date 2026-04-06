@@ -1,0 +1,109 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+.shop {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin-top: 6.9rem;
+  padding: 2rem;
+  width: 100%;
+  background-color: $white;
+
+  @include tablet {
+    flex-direction: row;
+    padding: 4rem;
+    align-items: flex-start;
+  }
+
+  @include desktop {
+    max-width: 160rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &__sidebar {
+    width: 100%;
+    background-color: $white-1;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    border: 0.1rem solid $white-2;
+
+    @include tablet {
+      width: 28rem;
+      flex-shrink: 0;
+      position: sticky;
+      top: 8.5rem;
+    }
+
+    &-title {
+      font-family: $font-main;
+      color: $dark-1;
+      margin-bottom: 2rem;
+    }
+  }
+
+  &__filter-nav {
+    display: flex;
+    flex-direction: column;
+    overflow-x: auto;
+    gap: 1rem;
+    padding-bottom: 1rem;
+
+    @include tablet {
+      overflow-x: visible;
+    }
+
+    &::-webkit-scrollbar {
+      height: 0.4rem;
+    }
+  }
+
+  &__filter-btn {
+    @include center;
+    justify-content: flex-start;
+    background: transparent;
+    border: none;
+    padding: 1.2rem 1.8rem;
+    font-size: 1.5rem;
+    color: $dark-2;
+    cursor: pointer;
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    gap: 1.2rem;
+
+    &:hover {
+      background-color: $white-2;
+      color: $orange-1;
+    }
+
+    &--active {
+      background-color: $orange-2;
+      color: $white !important;
+      box-shadow: 0 0.4rem 1.2rem rgba($orange-2, 0.3);
+
+      .shop__dot {
+        background-color: $white;
+      }
+    }
+  }
+
+  &__dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    background-color: $dark-3;
+    border-radius: 50%;
+  }
+
+  &__products-container {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
+    gap: 3rem;
+    width: 100%;
+
+    @include mobile {
+      grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    }
+  }
+}

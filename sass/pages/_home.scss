@@ -5,3 +5,12 @@
   align-content: space-around;
   min-height: 100vh;
 }
+.loading {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20rem;
+  align-items: center;
+  font-size: 2rem;
+  text-align: center;
+}

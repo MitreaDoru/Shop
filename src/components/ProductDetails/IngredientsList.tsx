@@ -29,42 +29,38 @@ const IngredientsList: React.FC<IngredientsListProps> = ({
       items.map((item) => (item._id === id ? { ...item, multiplier } : item)),
     );
   };
+
   return (
-    <div>
-      <div className="row" key={item._id}>
-        <input
-          className="label"
-          placeholder="Name"
-          value={item.label}
-          onChange={(e) => updateLabel(item._id, e.target.value)}
-        />
-
-        <input
-          className="value"
-          type="number"
-          value={item.value}
-          onChange={(e) =>
-            updateValue(item._id, parseFloat(e.target.value) || 0)
-          }
-        />
-
-        <input
-          className="multiplier"
-          type="number"
-          value={item.multiplier}
-          onChange={(e) =>
-            updateMultiplier(item._id, parseFloat(e.target.value) || 0)
-          }
-        />
-
-        <div className="calculated">
-          {(item.value * item.multiplier).toFixed(2)}
-        </div>
-
-        <button className="delete" onClick={() => removeItem(item._id)}>
-          ✕
-        </button>
+    <div className="row" key={item._id}>
+      <input
+        className="label"
+        placeholder="Nume"
+        type="text"
+        value={item.label}
+        onChange={(e) => updateLabel(item._id, e.target.value)}
+      />
+      <input
+        type="number"
+        value={item.value}
+        onFocus={(e) => e.target.value === "0" && (e.target.value = "")}
+        onBlur={(e) => e.target.value === "" && (e.target.value = "0")}
+        onChange={(e) => updateValue(item._id, parseFloat(e.target.value) || 0)}
+      />
+      <input
+        type="number"
+        value={item.multiplier}
+        onFocus={(e) => e.target.value === "0" && (e.target.value = "")}
+        onBlur={(e) => e.target.value === "" && (e.target.value = "0")}
+        onChange={(e) =>
+          updateMultiplier(item._id, parseFloat(e.target.value) || 0)
+        }
+      />
+      <div className="calculated">
+        {(item.value * item.multiplier).toFixed(2)}
       </div>
+      <button className="delete" onClick={() => removeItem(item._id)}>
+        ✕
+      </button>
     </div>
   );
 };

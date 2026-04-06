@@ -1,42 +1,187 @@
 @use "../abstracts/variables" as *;
 @use "../abstracts/mixins" as *;
-.content {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-  gap: 2rem;
-  padding: 2rem;
-  justify-items: center;
+.home-content {
+  margin-top: 6.9rem;
 
-  margin: 0 auto;
-  width: 100%;
-  @include tablet {
-    padding: 2rem 5%;
+  .categories {
+    background-color: $white-1;
+    padding: 0;
+    width: 100%;
+
+    height: calc(100vh - 6.9rem);
+
+    &__container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      gap: 0;
+
+      @include tablet {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+      }
+    }
+
+    &__card {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      cursor: pointer;
+      border-radius: 0;
+
+      &:hover .categories__img {
+        transform: scale(1.05);
+      }
+    }
+
+    &__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+
+    &__overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba($dark-3, 0.7) 0%,
+        transparent 50%
+      );
+      @include center;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 5rem;
+      gap: 1.5rem;
+    }
+
+    &__name {
+      color: $white;
+      font-family: $font-main;
+      font-size: 3rem;
+      text-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.5);
+    }
+
+    &__btn {
+      padding: 1.2rem 2.5rem;
+      border: 0.1rem solid $white;
+      border-radius: 0.4rem;
+      background: rgba($white, 0.1);
+      backdrop-filter: blur(0.5rem);
+      color: $white;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.2rem;
+      cursor: pointer;
+      transition: all 0.3s;
+
+      &:hover {
+        background: $white;
+        color: $dark-1;
+      }
+    }
+  }
+
+  .carousel {
+    padding: 6rem 2rem;
+    background: $white;
+
+    @include tablet {
+      padding: 6rem 8rem;
+    }
+
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3rem;
+
+      h2 {
+        font-family: $font-main;
+        color: $dark-1;
+      }
+    }
+
+    &__controls {
+      display: flex;
+      gap: 1.5rem;
+
+      button {
+        @include center;
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        border: 0.1rem solid $white-2;
+        background: $white;
+        color: $dark-1;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: $dark-1;
+          color: $white;
+          border-color: $dark-1;
+        }
+      }
+    }
+
+    &__track {
+      display: flex;
+      gap: 2rem;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding: 2rem 0;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
   }
 
   .card {
-    width: 100%;
-    border-radius: 1rem;
-    overflow: hidden;
-    cursor: pointer;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    a {
-      width: 100%;
-    }
-    img {
-      width: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.5s ease;
-    }
+    min-width: 28rem;
+    background: $white;
+    border-radius: 1.6rem;
+    padding: 1.6rem;
+    border: 0.1rem solid $white-1;
+    transition: all 0.3s ease;
 
     &:hover {
-      box-shadow: 0rem 0.4rem 1.5rem $white-3;
-      img {
-        transform: scale(1.1);
+      transform: translateY(-0.8rem);
+      box-shadow: 0 1rem 2.5rem rgba($dark-1, 0.1);
+      border-color: $orange-2;
+    }
+
+    &__img {
+      width: 100%;
+      border-radius: 1.2rem;
+      margin-bottom: 1.5rem;
+      object-fit: cover;
+    }
+
+    h3 {
+      font-family: $font-main;
+      color: $dark-2;
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      @include center;
+      width: 100%;
+      padding: 1.2rem;
+      background: $dark-1;
+      color: $white;
+      border: none;
+      border-radius: 0.8rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+
+      &:hover {
+        background: $orange-1;
       }
     }
   }

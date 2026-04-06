@@ -1,18 +1,10 @@
-import type { IngredientRecived } from './../../types/ingredients';
+import type { OrderItem } from "../../types/order";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-interface CartItem {
-  _id: string;
-  image: string;
-  name: string;
-  price: number;
-  quantity: number;
-  ingredients: IngredientRecived[];
-}
 interface CartState {
-  items: CartItem[];
+  items: OrderItem[];
 }
-const loadCartFromStorage = (): CartItem[] => {
+const loadCartFromStorage = (): OrderItem[] => {
   try {
     const data = localStorage.getItem("cart");
     return data ? JSON.parse(data) : [];
@@ -28,17 +20,7 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    add: (
-      state,
-      action: PayloadAction<{
-        _id: string;
-        image: string;
-        name: string;
-        price: number;
-        quantity: number;
-        ingredients: IngredientRecived[];
-      }>,
-    ) => {
+    add: (state, action: PayloadAction<OrderItem>) => {
       const existingItem = state.items?.find(
         (item) => item._id === action.payload._id,
       );
@@ -91,8 +73,12 @@ const cartSlice = createSlice({
         localStorage.setItem("cart", JSON.stringify(state.items));
       }
     },
+    setCart: (state, action: PayloadAction<OrderItem[]>) => {
+      state.items = action.payload;
+    },
   },
 });
 
-export const { add, remove, increment, decrement, clear } = cartSlice.actions;
+export const { add, remove, increment, decrement, clear, setCart } =
+  cartSlice.actions;
 export default cartSlice.reducer;

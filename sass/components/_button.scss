@@ -4,13 +4,14 @@
   padding: 0.8rem 1rem;
   font-size: 1.5rem;
   border: none;
-  background-color: rgb(72, 189, 72);
+  background-color: $dark-1;
   border-radius: 0.3rem;
-  color: $dark-3;
+  color: $white;
+  text-decoration: none;
   margin: 0;
   cursor: pointer;
   &:hover {
-    background-color: $green-1;
+    background-color: $dark-2;
     transform: translateY(-2px);
   }
 }

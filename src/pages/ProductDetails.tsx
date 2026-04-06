@@ -30,52 +30,43 @@ const ProductPage = () => {
     <div className="product-page">
       <div className="container">
         <div className="product-hero">
-          <div className="gallery">
+          <div className="product-hero__gallery">
             <img
-              className="main-image"
-              src={`/Candle/assets/${product.image}`}
-              alt="Candle"
+              className="product-hero__main-image"
+              src={`${product.image}`}
+              alt={product.name}
             />
-
-            <div className="thumbnails">
-              <img src="https://via.placeholder.com/100x120" alt="" />
-              <img src="https://via.placeholder.com/100x120" alt="" />
-              <img src="https://via.placeholder.com/100x120" alt="" />
-            </div>
           </div>
 
-          <div className="product-info">
-            <h1>{product.name}</h1>
-            <p className="price">{product.price.toFixed(2)} RON</p>
-            <p className="description">De adaugat</p>
+          <div className="product-hero__info">
+            <h1 className="product-hero__title">{product.name}</h1>
+            <p className="product-hero__description">
+              Descoperă calitatea premium a produselor noastre artizanale,
+              create cu atenție la detalii.
+            </p>
 
-            <div className="actions">
-              {(existInCart.length > 0 ? existInCart[0].quantity : 0) === 0 && (
+            <div className="product-hero__actions">
+              {(existInCart.length > 0 ? existInCart[0].quantity : 0) === 0 ? (
                 <button
-                  className="btn"
-                  onClick={() => {
-                    dispatch(add({ ...product, quantity: 1 }));
-                  }}
+                  className="product-hero__btn-add"
+                  onClick={() => dispatch(add({ ...product, quantity: 1 }))}
                 >
-                  Add to Cart
+                  Adaugă în listă
                 </button>
-              )}
-              {(existInCart.length > 0 ? existInCart[0].quantity : 0) > 0 && (
-                <div className="quantity">
+              ) : (
+                <div className="product-hero__quantity">
                   <button
-                    className="btn"
-                    onClick={() => {
-                      dispatch(decrement({ _id: product._id }));
-                    }}
+                    className="product-hero__btn-qty"
+                    onClick={() => dispatch(decrement({ _id: product._id }))}
                   >
                     -
                   </button>
-                  <p className="count">{`${existInCart.length > 0 ? existInCart[0].quantity : 0}`}</p>
+                  <span className="product-hero__count">
+                    {existInCart[0].quantity}
+                  </span>
                   <button
-                    className="btn"
-                    onClick={() => {
-                      dispatch(increment({ _id: product._id }));
-                    }}
+                    className="product-hero__btn-qty"
+                    onClick={() => dispatch(increment({ _id: product._id }))}
                   >
                     +
                   </button>
@@ -85,73 +76,57 @@ const ProductPage = () => {
           </div>
         </div>
 
-        <div className="tab-content">
-          <div className="tabs">
+        <div className="product-tabs">
+          <div className="product-tabs__nav">
             <button
-              className={activeTab === "detalii" ? "active" : ""}
+              className={`product-tabs__btn ${activeTab === "detalii" ? "is-active" : ""}`}
               onClick={() => setActiveTab("detalii")}
             >
               Detalii
             </button>
             <button
-              className={activeTab === "specificatii" ? "active" : ""}
+              className={`product-tabs__btn ${activeTab === "specificatii" ? "is-active" : ""}`}
               onClick={() => setActiveTab("specificatii")}
             >
               Specificații
             </button>
-            <button
-              className={activeTab === "review" ? "active" : ""}
-              onClick={() => setActiveTab("review")}
-            >
-              Review-uri
-            </button>
           </div>
-          {activeTab === "detalii" && (
-            <div className="panel">
-              <p>de completat</p>
-            </div>
-          )}
 
-          {activeTab === "specificatii" && (
-            <div className="panel">
-              <table>
-                <tbody>
-                  <tr>
-                    <td>Diametru</td>
-                    <td>de</td>
-                  </tr>
-                  <tr>
-                    <td>Inaltime</td>
-                    <td>completat</td>
-                  </tr>
-                  <tr>
-                    <td>Greutate</td>
-                    <td>si</td>
-                  </tr>
-                  <tr>
-                    <td>Miros</td>
-                    <td>aici</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          )}
-
-          {activeTab === "review" && (
-            <div className="panel">
-              <div className="review">
-                <strong>Andrei Popescu</strong>
-                <span>★★★★★</span>
-                <p>de adaugat</p>
+          <div className="product-tabs__content">
+            {activeTab === "detalii" && (
+              <div className="product-tabs__panel">
+                <p>
+                  Acest produs este realizat manual folosind tehnici
+                  tradiționale și materiale eco-friendly.
+                </p>
               </div>
+            )}
 
-              <div className="review">
-                <strong>Maria Ionescu</strong>
-                <span>★★★★☆</span>
-                <p>de adaugat</p>
+            {activeTab === "specificatii" && (
+              <div className="product-tabs__panel">
+                <table className="product-tabs__table">
+                  <tbody>
+                    <tr>
+                      <td>Diametru</td>
+                      <td>85 mm</td>
+                    </tr>
+                    <tr>
+                      <td>Înălțime</td>
+                      <td>100 mm</td>
+                    </tr>
+                    <tr>
+                      <td>Greutate</td>
+                      <td>350g</td>
+                    </tr>
+                    <tr>
+                      <td>Material</td>
+                      <td>Ceară Naturală</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </div>
