@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { RouterProvider, createHashRouter } from "react-router-dom";
 import ProductDetails from "./pages/ProductDetails";
 import HomeContent from "./components/HomeContent/HomeContent";
 import Home from "./pages/Home";
@@ -13,20 +13,19 @@ import { loginUser, logoutUser } from "./features/actions/authSlice";
 import ProductsContent from "./components/Products/ProductsContent";
 import OrdersPage from "./pages/Orders";
 import { useAuthCheck } from "./features/actions/useAuthCheck";
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
-    path: "/Candle",
+    path: "/", // Schimbă din "/Candle" în "/" pentru că HashRouter se ocupă singur de bază
     element: <Home />,
     children: [
-      { path: "/Candle", element: <HomeContent /> },
-      { path: "/Candle/product/:id", element: <ProductDetails /> },
-      { path: "/Candle/cart", element: <Cart /> },
-      { path: "/Candle/:category", element: <ProductsContent /> },
-      { path: "/Candle/orders", element: <OrdersPage /> },
-
+      { path: "/", element: <HomeContent /> },
+      { path: "/product/:id", element: <ProductDetails /> },
+      { path: "/cart", element: <Cart /> },
+      { path: "/:category", element: <ProductsContent /> },
+      { path: "/orders", element: <OrdersPage /> },
       {
         element: <AdminRoute />,
-        children: [{ path: "/Candle/admin", element: <Admin /> }],
+        children: [{ path: "/admin", element: <Admin /> }],
       },
     ],
   },
@@ -82,6 +81,7 @@ function App() {
   }
   return (
     <div className="app">
+      {/* 3. Provider-ul rămâne la fel, dar va folosi router-ul de tip Hash */}
       <RouterProvider router={router} />
     </div>
   );
