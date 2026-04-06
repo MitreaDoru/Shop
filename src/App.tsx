@@ -43,14 +43,17 @@ function App() {
       const token = localStorage.getItem("token");
 
       try {
-        const dataRes = await fetch("http://localhost:5000/data");
+        const dataRes = await fetch("https://candle-1-ax6h.onrender.com/data");
         const data = await dataRes.json();
         dispatch(addProduct(data.products));
         dispatch(ingredients(data.ingredients.ingredients));
         if (token && token !== "null") {
-          const userRes = await fetch("http://localhost:5000/user", {
-            headers: { Authorization: `Bearer ${token.replace(/["]/g, "")}` },
-          });
+          const userRes = await fetch(
+            "https://candle-1-ax6h.onrender.com/user",
+            {
+              headers: { Authorization: `Bearer ${token.replace(/["]/g, "")}` },
+            },
+          );
 
           if (userRes.ok) {
             const userData = await userRes.json();
