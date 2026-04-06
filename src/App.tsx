@@ -15,7 +15,7 @@ import OrdersPage from "./pages/Orders";
 import { useAuthCheck } from "./features/actions/useAuthCheck";
 const router = createHashRouter([
   {
-    path: "/", // Schimbă din "/Candle" în "/" pentru că HashRouter se ocupă singur de bază
+    path: "/",
     element: <Home />,
     children: [
       { path: "/", element: <HomeContent /> },

@@ -40,7 +40,7 @@ const OrdersPage: React.FC = () => {
   };
   useEffect(() => {
     if (!token || !user?.email) {
-      navigate("/Candle");
+      navigate("/");
       return;
     }
 
@@ -52,7 +52,7 @@ const OrdersPage: React.FC = () => {
 
         if (response.status === 401) {
           dispatch(logoutUser());
-          navigate("/Candle");
+          navigate("/");
           return;
         }
 
@@ -143,7 +143,7 @@ const OrdersPage: React.FC = () => {
                         dispatch(clear());
                         dispatch(editOrder(order._id));
                         order.orderItems.forEach((item) => dispatch(add(item)));
-                        navigate("/Candle/cart");
+                        navigate("/cart");
                       }}
                     >
                       Editează

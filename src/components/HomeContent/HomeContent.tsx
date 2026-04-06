@@ -18,7 +18,7 @@ function HomeContent() {
         <div className="categories__container">
           {categories.map((cat, index) => (
             <div
-              onClick={() => navigate(`/Candle/${cat.title}`)}
+              onClick={() => navigate(`/${cat.title}`)}
               className="categories__card"
               key={index}
             >

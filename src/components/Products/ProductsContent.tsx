@@ -28,7 +28,7 @@ function ProductsContent() {
             <button
               key={cat.id}
               className={`shop__filter-btn ${category === cat.id ? "shop__filter-btn--active" : ""}`}
-              onClick={() => navigate(`/Candle/${cat.id}`)}
+              onClick={() => navigate(`/${cat.id}`)}
             >
               <span className="shop__dot"></span>
               {cat.label}

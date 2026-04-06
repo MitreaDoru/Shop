@@ -6,7 +6,7 @@ function AdminRoute() {
   const user = useSelector(selectUser);
 
   if (!user || !user.isAdmin) {
-    return <Navigate to="/Candle" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return <Outlet />;

@@ -76,7 +76,7 @@ function ProductCard({ item }: { item: Product }) {
         </div>
       )}
 
-      <Link to={`/Candle/product/${item._id}`} className="card__link">
+      <Link to={`/product/${item._id}`} className="card__link">
         <img src={`${item.image}`} alt={item.name} className="card__img" />
       </Link>
 
