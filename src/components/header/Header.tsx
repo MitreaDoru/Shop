@@ -22,7 +22,7 @@ function Header() {
     <header className="header">
       <Link
         className="header__logo"
-        to="/Candle/"
+        to="/"
         onClick={() => setIsMenuOpen(false)}
       >
         <img
@@ -54,7 +54,7 @@ function Header() {
           {user?.isAdmin && (
             <Link
               className="header__nav-link"
-              to="/Candle/admin"
+              to="/admin"
               onClick={() => setIsMenuOpen(false)}
             >
               Admin
@@ -63,7 +63,7 @@ function Header() {
           {!user?.isAdmin && user?.email && (
             <Link
               className="header__nav-link"
-              to="/Candle/orders"
+              to="/orders"
               onClick={() => setIsMenuOpen(false)}
             >
               Orders
@@ -71,14 +71,14 @@ function Header() {
           )}
           <Link
             className="header__nav-link"
-            to="/Candle/"
+            to="/"
             onClick={() => setIsMenuOpen(false)}
           >
             Home
           </Link>
           <Link
             className="header__nav-link"
-            to="/Candle/products"
+            to="/products"
             onClick={() => setIsMenuOpen(false)}
           >
             All Products
@@ -88,7 +88,7 @@ function Header() {
         <div className="header__actions">
           <div className="header__cart">
             <Link
-              to="/Candle/cart"
+              to="/cart"
               className="header__cart-link"
               onClick={() => setIsMenuOpen(false)}
             >

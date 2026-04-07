@@ -83,7 +83,7 @@ function Cart() {
       const data = await response.json();
 
       if (response.ok) {
-        navigate("/Candle/orders");
+        navigate("/orders");
         dispatch(alert(data.alert));
         dispatch(clear());
         dispatch(editOrder(null));
@@ -144,7 +144,7 @@ function Cart() {
           <p>Adaugă produse pentru a putea cere o ofertă personalizată.</p>
           <button
             className="empty-cart__btn-home"
-            onClick={() => navigate("/Candle/")}
+            onClick={() => navigate("/")}
           >
             Înapoi la magazin
           </button>
