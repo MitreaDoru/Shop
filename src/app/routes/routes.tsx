@@ -1,4 +1,4 @@
-import { createHashRouter } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import Home from "../../pages/Home";
 import HomeContent from "../../components/HomeContent/HomeContent";
 import { lazy, Suspense } from "react";
@@ -14,7 +14,7 @@ const OrdersPage = lazy(() => import("../../pages/Orders"));
 const AdminRoute = lazy(() => import("../routes/AdminRoute"));
 
 const PageLoader = <div className="loading">Se încarcă pagina...</div>;
-export const router = createHashRouter([
+export const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
