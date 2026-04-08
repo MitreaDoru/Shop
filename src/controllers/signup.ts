@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import User from "../models/User";
-import bcrypt from "bcryptjs";
 import { validationResult } from "express-validator";
+import bcrypt from "bcryptjs";
+import User from "../models/User";
+import { generateAuthResponse } from "./login";
+
 export const postSignup = async (
   req: Request,
   res: Response,
@@ -9,38 +11,32 @@ export const postSignup = async (
 ) => {
   try {
     const errors = validationResult(req);
-
     if (!errors.isEmpty()) {
       return res.status(422).json({
-        alert: {
-          title: "Validation Error",
-          message: errors.array()[0].msg,
-        },
+        alert: { title: "Eroare Validare", message: errors.array()[0].msg },
       });
     }
 
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = new User({
       email,
+      name: name || email.split("@")[0],
       password: hashedPassword,
       isAdmin: false,
     });
 
     await user.save();
 
-    res.status(200).json({
+    res.status(201).json({
       alert: {
-        title: "Signup Successful",
-        message: "Ai creat contul.",
+        title: "Cont creat",
+        message: "Contul a fost creat cu succes! Acum te poți autentifica.",
       },
     });
   } catch (err: any) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
     next(err);
   }
 };

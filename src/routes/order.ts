@@ -5,14 +5,19 @@ import {
   getOrders,
   updateOrder,
 } from "../controllers/order";
+import { isAuth } from "../middleware/auth";
 const { body } = require("express-validator");
+
 const router = Router();
 router.post(
-  "/cart",
-  [body("cart", "Need to add somthing in cart").isArray({ min: 1 })],
+  "/order",
+  isAuth,
+  [body("cart").isArray({ min: 1 }).withMessage("Coșul este gol")],
   createOrder,
 );
-router.get("/orders", getOrders);
-router.delete("/order", deleteOrder);
-router.patch("/order", updateOrder);
+
+router.get("/orders", isAuth, getOrders);
+router.delete("/order", isAuth, deleteOrder);
+router.patch("/order", isAuth, updateOrder);
+
 export default router;

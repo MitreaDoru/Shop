@@ -3,6 +3,50 @@ import User from "../models/User";
 import bcrypt from "bcryptjs";
 import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
+import type { GoogleLoginRequest } from "../types/googleAuth";
+
+export const generateAuthResponse = (
+  user: { _id: string; email: string; isAdmin: boolean },
+  message: string,
+) => {
+  const token = jwt.sign(
+    { userId: user._id, email: user.email, isAdmin: user.isAdmin },
+    process.env.JWT_SECRET!,
+    { expiresIn: "24h" },
+  );
+
+  return {
+    token,
+    user: { id: user._id, email: user.email, isAdmin: user.isAdmin },
+    alert: { title: "Succes", message },
+  };
+};
+export const loginGoogle = async (
+  req: GoogleLoginRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { email, name, googleId } = req.googleProfile!;
+
+  try {
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      user = new User({
+        email,
+        name,
+        googleId,
+        isAdmin: false,
+        password: await bcrypt.hash(Math.random().toString(36).slice(-10), 12),
+      });
+      await user.save();
+    }
+
+    res.status(200).json(generateAuthResponse(user, `Bine ai venit, ${name}!`));
+  } catch (err) {
+    next(err);
+  }
+};
 
 export const getLogin = async (
   req: Request,
@@ -11,62 +55,35 @@ export const getLogin = async (
 ) => {
   try {
     const errors = validationResult(req);
-
     if (!errors.isEmpty()) {
       return res.status(422).json({
-        alert: {
-          title: "Validation Error",
-          message: errors.array()[0].msg,
-        },
+        alert: { title: "Eroare Validare", message: errors.array()[0].msg },
       });
     }
 
     const { email, password } = req.body;
-
     const user = await User.findOne({ email });
 
-    if (!user) {
+    if (!user || !user.password) {
       return res.status(401).json({
         alert: {
-          title: "Authentication Failed",
-          message: "No user found with this email",
+          title: "Autentificare eșuată",
+          message: "Email sau parolă incorectă",
         },
       });
     }
 
     const isEqual = await bcrypt.compare(password, user.password);
-
     if (!isEqual) {
       return res.status(401).json({
         alert: {
-          title: "Authentication Failed",
-          message: "Incorrect password",
+          title: "Autentificare eșuată",
+          message: "Email sau parolă incorectă",
         },
       });
     }
 
-    const token = jwt.sign(
-      {
-        userId: user._id,
-        email: user.email,
-        isAdmin: user.isAdmin,
-      },
-      process.env.JWT_SECRET!,
-      { expiresIn: "24h" },
-    );
-
-    res.status(200).json({
-      alert: {
-        title: "Login Successful",
-        message: "You have logged in successfully.",
-      },
-      token,
-      user: {
-        id: user._id,
-        email: user.email,
-        isAdmin: user.isAdmin,
-      },
-    });
+    res.status(200).json(generateAuthResponse(user, "Te-ai logat cu succes!"));
   } catch (err) {
     next(err);
   }

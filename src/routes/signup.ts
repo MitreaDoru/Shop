@@ -5,26 +5,23 @@ import User from "../models/User";
 
 const router = Router();
 
-export const postSignupRoute = router.post(
-  "/signup",
-  [
-    body("email")
-      .isEmail()
-      .withMessage("Enter a valid email")
-      .custom(async (value: string) => {
-        const user = await User.findOne({ email: value });
+const signupValidation = [
+  body("email")
+    .isEmail()
+    .withMessage("Te rugăm să introduci un email valid.")
+    .custom(async (value) => {
+      const user = await User.findOne({ email: value });
+      if (user) throw new Error("Acest email este deja utilizat.");
+      return true;
+    })
+    .normalizeEmail(),
 
-        if (user) {
-          throw new Error("This email already exists");
-        }
+  body("password")
+    .trim()
+    .isLength({ min: 5 })
+    .withMessage("Parola trebuie să aibă cel puțin 5 caractere."),
+];
 
-        return true;
-      })
-      .normalizeEmail(),
+router.post("/signup", signupValidation, postSignup);
 
-    body("password")
-      .isLength({ min: 5 })
-      .withMessage("Password must be at least 5 characters"),
-  ],
-  postSignup,
-);
+export default router;

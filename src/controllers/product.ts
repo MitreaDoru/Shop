@@ -2,119 +2,118 @@ import { Request, Response } from "express";
 import Product from "../models/product";
 import Ingredients from "../models/ingredients";
 
+interface MulterRequest extends Request {
+  file?: any;
+}
+
 export const createProduct = async (
-  req: Request,
+  req: MulterRequest,
   res: Response,
 ): Promise<void> => {
   try {
     let { name, category, items, ingredients } = req.body;
+    const file = req.file;
 
-    if (typeof items === "string") items = JSON.parse(items);
-    if (typeof ingredients === "string") ingredients = JSON.parse(ingredients);
-    const file = (req as any).file;
+    const parsedItems = typeof items === "string" ? JSON.parse(items) : items;
+    const parsedIngredients =
+      typeof ingredients === "string" ? JSON.parse(ingredients) : ingredients;
+
     if (!name || !file) {
       res.status(400).json({
         alert: {
-          title: "Validation Error",
-          message: "Product name and image are required.",
+          title: "Eroare Validare",
+          message: "Numele și imaginea sunt obligatorii.",
         },
       });
       return;
     }
 
-    const price = items.reduce(
-      (sum: number, item: any) => sum + (item.value * item.multiplier || 0),
+    const price = parsedItems.reduce(
+      (sum: number, item: any) =>
+        sum + Number(item.value || 0) * Number(item.multiplier || 0),
       0,
     );
+
     const newProduct = new Product({
       name,
       image: file.path,
       category,
       price,
       quantity: 0,
-      ingredients: items,
+      ingredients: parsedItems,
     });
 
-    const allIngredients = ingredients.map((item: any) => ({
-      ...item,
+    const resetIngredients = parsedIngredients.map((ing: any) => ({
+      ...ing,
       multiplier: 0,
     }));
 
-    await Ingredients.findOneAndUpdate(
-      {},
-      { $set: { ingredients: allIngredients } },
-      { upsert: true, returnDocument: "after" },
-    );
-
-    await newProduct.save();
+    await Promise.all([
+      newProduct.save(),
+      Ingredients.findOneAndUpdate(
+        {},
+        { $set: { ingredients: resetIngredients } },
+        { upsert: true },
+      ),
+    ]);
 
     res.status(201).json({
-      alert: {
-        title: "Product Created",
-        message: "The product has been created successfully.",
-      },
+      alert: { title: "Succes", message: "Produsul a fost creat." },
       product: newProduct,
     });
   } catch (error) {
     console.error("CREATE PRODUCT ERROR:", error);
-    res.status(500).json({
-      alert: {
-        title: "Server Error",
-        message: "An error occurred while creating the product.",
-      },
-      error: error instanceof Error ? error.message : error,
-    });
+    res
+      .status(500)
+      .json({
+        alert: {
+          title: "Server Error",
+          message: "Eroare la crearea produsului.",
+        },
+      });
   }
 };
 
-export const getData = async (req: Request, res: Response): Promise<void> => {
+export const getData = async (_req: Request, res: Response): Promise<void> => {
   try {
     const [products, ingredientsData] = await Promise.all([
       Product.find().lean(),
       Ingredients.findOne().lean(),
     ]);
+
     res.status(200).json({
       products: products || [],
-      ingredients: ingredientsData || { ingredients: [] },
+      ingredients: ingredientsData?.ingredients || [],
     });
   } catch (error) {
-    console.error("GET DATA ERROR:", error);
-    res.status(500).json({
-      alert: {
-        title: "Server Error",
-        message: "An error occurred while fetching data.",
-      },
-      error: error instanceof Error ? error.message : error,
-    });
+    res
+      .status(500)
+      .json({ alert: { title: "Error", message: "Eroare la descărcare." } });
   }
 };
+
 export const deleteProduct = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
   try {
     const { id } = req.params;
+    const deleted = await Product.findByIdAndDelete(id);
 
-    const deletedProduct = await Product.findByIdAndDelete(id);
-
-    if (!deletedProduct) {
-      res.status(404).json({
-        alert: { title: "Eroare", message: "Produsul nu a fost găsit." },
-      });
+    if (!deleted) {
+      res
+        .status(404)
+        .json({ alert: { title: "Eroare", message: "Produsul nu există." } });
       return;
     }
 
     res.status(200).json({
-      alert: { title: "Șters", message: "Produsul a fost eliminat cu succes." },
-      id: id,
+      alert: { title: "Șters", message: "Produs eliminat." },
+      id,
     });
   } catch (error) {
-    console.error("DELETE PRODUCT ERROR:", error);
-    res.status(500).json({
-      alert: {
-        title: "Server Error",
-        message: "Eroare la ștergerea produsului.",
-      },
-    });
+    res
+      .status(500)
+      .json({ alert: { title: "Error", message: "Eroare la ștergere." } });
   }
 };

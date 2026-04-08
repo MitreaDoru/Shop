@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { getLogin } from "../controllers/login";
-const bcrypt = require("bcryptjs");
-const { body } = require("express-validator");
+import { body } from "express-validator";
+import { getLogin, loginGoogle } from "../controllers/login";
+import { verifyGoogleToken } from "../middleware/verifyGoogleToken";
 const router = Router();
-export const getLoginRoute = router.post(
+router.post(
   "/login",
   [
     body("email").isEmail().withMessage("Enter a valid email").normalizeEmail(),
@@ -14,3 +14,5 @@ export const getLoginRoute = router.post(
   ],
   getLogin,
 );
+router.post("/google/login", verifyGoogleToken, loginGoogle);
+export default router;

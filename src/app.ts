@@ -1,5 +1,5 @@
-import { postSignupRoute } from "./routes/signup";
-import { getLoginRoute } from "./routes/login";
+import postSignupRoute from "./routes/signup";
+import getLoginRoute from "./routes/login";
 import productRoute from "./routes/product";
 import userRoute from "./routes/user";
 import express, { Application } from "express";
