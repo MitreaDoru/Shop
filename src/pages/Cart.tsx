@@ -24,7 +24,7 @@ function Cart() {
       <div className="cart-page">
         <div className="empty-cart">
           <div className="empty-cart__icon-box">
-            <img src="/Candle/assets/lista.png" alt="empty cart" />
+            <img src="/assets/lista.png" alt="empty cart" />
           </div>
           <h2>Lista ta este goală</h2>
           <p>Adaugă produse pentru a putea cere o ofertă personalizată.</p>

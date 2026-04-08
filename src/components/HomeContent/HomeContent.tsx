@@ -24,7 +24,7 @@ function HomeContent() {
             >
               <img
                 className="categories__img"
-                src={`/Candle/assets/${cat.title}.jpg`}
+                src={`/assets/${cat.title}.jpg`}
                 alt={cat.title}
               />
               <div className="categories__overlay">

@@ -27,7 +27,7 @@ function Header() {
           onClick={() => setIsMenuOpen(false)}
         >
           <img
-            src="/Candle/assets/candle-logo.png"
+            src="/assets/candle-logo.png"
             alt="logo"
             className="header__logo-img"
           />
@@ -96,7 +96,7 @@ function Header() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 <img
-                  src="/Candle/assets/cart.png"
+                  src="/assets/cart.png"
                   alt="cart"
                   className="header__icon"
                 />
@@ -116,7 +116,7 @@ function Header() {
                 className="header__user"
               >
                 <img
-                  src="/Candle/assets/user.png"
+                  src="/assets/user.png"
                   alt="user"
                   className="header__icon"
                 />
