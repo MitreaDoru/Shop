@@ -19,137 +19,140 @@ function Header() {
     .map((item) => item.quantity)
     .reduce((total, quantity) => total + quantity, 0);
   return (
-    <header className="header">
-      <Link
-        className="header__logo"
-        to="/"
-        onClick={() => setIsMenuOpen(false)}
-      >
-        <img
-          src="/Candle/assets/candle-logo.png"
-          alt="logo"
-          className="header__logo-img"
-        />
-        <p className="header__brand">Light & Art</p>
-      </Link>
+    <>
+      <header className="header">
+        <Link
+          className="header__logo"
+          to="/"
+          onClick={() => setIsMenuOpen(false)}
+        >
+          <img
+            src="/Candle/assets/candle-logo.png"
+            alt="logo"
+            className="header__logo-img"
+          />
+          <p className="header__brand">Light & Art</p>
+        </Link>
 
-      <button
-        className="header__burger"
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-        aria-label="Menu"
-      >
-        <span
-          className={`header__burger-line ${isMenuOpen ? "header__burger-line--open" : ""}`}
-        ></span>
-        <span
-          className={`header__burger-line ${isMenuOpen ? "header__burger-line--open" : ""}`}
-        ></span>
-        <span
-          className={`header__burger-line ${isMenuOpen ? "header__burger-line--open" : ""}`}
-        ></span>
-      </button>
+        <button
+          className="header__burger"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Menu"
+        >
+          <span
+            className={`header__burger-line ${isMenuOpen ? "header__burger-line--open" : ""}`}
+          ></span>
+          <span
+            className={`header__burger-line ${isMenuOpen ? "header__burger-line--open" : ""}`}
+          ></span>
+          <span
+            className={`header__burger-line ${isMenuOpen ? "header__burger-line--open" : ""}`}
+          ></span>
+        </button>
 
-      <nav className={`header__nav ${isMenuOpen ? "header__nav--active" : ""}`}>
-        <div className="header__nav-list">
-          {user?.isAdmin && (
+        <nav
+          className={`header__nav ${isMenuOpen ? "header__nav--active" : ""}`}
+        >
+          <div className="header__nav-list">
+            {user?.isAdmin && (
+              <Link
+                className="header__nav-link"
+                to="/admin"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Admin
+              </Link>
+            )}
+            {!user?.isAdmin && user?.email && (
+              <Link
+                className="header__nav-link"
+                to="/orders"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Orders
+              </Link>
+            )}
             <Link
               className="header__nav-link"
-              to="/admin"
+              to="/"
               onClick={() => setIsMenuOpen(false)}
             >
-              Admin
+              Home
             </Link>
-          )}
-          {!user?.isAdmin && user?.email && (
             <Link
               className="header__nav-link"
-              to="/orders"
+              to="/products"
               onClick={() => setIsMenuOpen(false)}
             >
-              Orders
-            </Link>
-          )}
-          <Link
-            className="header__nav-link"
-            to="/"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Home
-          </Link>
-          <Link
-            className="header__nav-link"
-            to="/products"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            All Products
-          </Link>
-        </div>
-
-        <div className="header__actions">
-          <div className="header__cart">
-            <Link
-              to="/cart"
-              className="header__cart-link"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <img
-                src="/Candle/assets/cart.png"
-                alt="cart"
-                className="header__icon"
-              />
-              {itemsCount > 0 && (
-                <span className="header__cart-count">{itemsCount}</span>
-              )}
+              All Products
             </Link>
           </div>
 
-          {!user?.email ? (
-            <div
-              onClick={() => {
-                setShowLogin(true);
-                setIsMenuOpen(false);
-                dispatch(switchMode("login"));
-              }}
-              className="header__user"
-            >
-              <img
-                src="/Candle/assets/user.png"
-                alt="user"
-                className="header__icon"
-              />
-            </div>
-          ) : (
-            <div className="header__auth-btns">
-              <button
-                onClick={() => {
-                  dispatch(setOrders([]));
-                  dispatch(logoutUser());
-                  navigate("/Candle/");
-                  setIsMenuOpen(false);
-                }}
-                className="header__btn header__btn--logout"
+          <div className="header__actions">
+            <div className="header__cart">
+              <Link
+                to="/cart"
+                className="header__cart-link"
+                onClick={() => setIsMenuOpen(false)}
               >
-                Logout
-              </button>
-              {user?.isAdmin && (
+                <img
+                  src="/Candle/assets/cart.png"
+                  alt="cart"
+                  className="header__icon"
+                />
+                {itemsCount > 0 && (
+                  <span className="header__cart-count">{itemsCount}</span>
+                )}
+              </Link>
+            </div>
+
+            {!user?.email ? (
+              <div
+                onClick={() => {
+                  setShowLogin(true);
+                  setIsMenuOpen(false);
+                  dispatch(switchMode("login"));
+                }}
+                className="header__user"
+              >
+                <img
+                  src="/Candle/assets/user.png"
+                  alt="user"
+                  className="header__icon"
+                />
+              </div>
+            ) : (
+              <div className="header__auth-btns">
                 <button
                   onClick={() => {
-                    setShowLogin(true);
+                    dispatch(setOrders([]));
+                    dispatch(logoutUser());
+                    navigate("/Candle/");
                     setIsMenuOpen(false);
-                    dispatch(switchMode("signup"));
                   }}
-                  className="header__btn header__btn--admin"
+                  className="header__btn header__btn--logout"
                 >
-                  Adauga cont
+                  Logout
                 </button>
-              )}
-            </div>
-          )}
-        </div>
-      </nav>
-
+                {user?.isAdmin && (
+                  <button
+                    onClick={() => {
+                      setShowLogin(true);
+                      setIsMenuOpen(false);
+                      dispatch(switchMode("signup"));
+                    }}
+                    className="header__btn header__btn--admin"
+                  >
+                    Adauga cont
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        </nav>
+      </header>
       <Login isOpen={showLogin} onClose={() => setShowLogin(false)} />
-    </header>
+    </>
   );
 }
 

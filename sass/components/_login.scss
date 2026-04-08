@@ -61,7 +61,33 @@
     flex-direction: column;
     gap: 2rem;
   }
+  &__divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+    color: #666;
+  }
 
+  &__divider::before,
+  &__divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #ddd;
+  }
+
+  &__divider:not(:empty)::before {
+    margin-right: 0.5em;
+  }
+  &__divider:not(:empty)::after {
+    margin-left: 0.5em;
+  }
+
+  &__google-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
   &__input-group {
     width: 100%;
   }

@@ -1,31 +1,19 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  selectCart,
-  selectProducts,
-} from "../features/actions/actionsSelectors";
-import type { AppDispatch } from "../app/store";
-import { add, increment, decrement } from "../features/actions/cartSlice";
-import type { Product } from "../types/product";
+import { useState } from "react";
+import { useProductPage } from "../hooks/useProductPage";
+
 const ProductPage = () => {
   const [activeTab, setActiveTab] = useState("detalii");
-  const { id } = useParams(); // id is string
-  const [product, setProduct] = useState<Product | null>(null);
-  const cart = useSelector(selectCart);
-  const products = useSelector(selectProducts);
-  const dispatch = useDispatch<AppDispatch>();
-  const existInCart = cart.filter((cartItem) => cartItem._id === id);
+  const { product, quantity, handleAdd, handleIncrement, handleDecrement } =
+    useProductPage();
 
-  useEffect(() => {
-    if (id) {
-      const foundProduct = products.find((item) => item._id === id);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setProduct(foundProduct || null);
-    }
-  }, [id, products]);
+  if (!product) {
+    return (
+      <div className="product-page">
+        <h2 className="not-found">Produsul nu a fost găsit.</h2>
+      </div>
+    );
+  }
 
-  if (!product) return <h2>Product not found</h2>;
   return (
     <div className="product-page">
       <div className="container">
@@ -33,7 +21,7 @@ const ProductPage = () => {
           <div className="product-hero__gallery">
             <img
               className="product-hero__main-image"
-              src={`${product.image}`}
+              src={product.image}
               alt={product.name}
             />
           </div>
@@ -42,31 +30,26 @@ const ProductPage = () => {
             <h1 className="product-hero__title">{product.name}</h1>
             <p className="product-hero__description">
               Descoperă calitatea premium a produselor noastre artizanale,
-              create cu atenție la detalii.
+              create cu atenție la detalii și pasiune pentru frumos.
             </p>
 
             <div className="product-hero__actions">
-              {(existInCart.length > 0 ? existInCart[0].quantity : 0) === 0 ? (
-                <button
-                  className="product-hero__btn-add"
-                  onClick={() => dispatch(add({ ...product, quantity: 1 }))}
-                >
+              {quantity === 0 ? (
+                <button className="product-hero__btn-add" onClick={handleAdd}>
                   Adaugă în listă
                 </button>
               ) : (
                 <div className="product-hero__quantity">
                   <button
                     className="product-hero__btn-qty"
-                    onClick={() => dispatch(decrement({ _id: product._id }))}
+                    onClick={handleDecrement}
                   >
                     -
                   </button>
-                  <span className="product-hero__count">
-                    {existInCart[0].quantity}
-                  </span>
+                  <span className="product-hero__count">{quantity}</span>
                   <button
                     className="product-hero__btn-qty"
-                    onClick={() => dispatch(increment({ _id: product._id }))}
+                    onClick={handleIncrement}
                   >
                     +
                   </button>
@@ -97,7 +80,8 @@ const ProductPage = () => {
               <div className="product-tabs__panel">
                 <p>
                   Acest produs este realizat manual folosind tehnici
-                  tradiționale și materiale eco-friendly.
+                  tradiționale și materiale eco-friendly. Fiecare piesă este
+                  unică și reflectă grija noastră pentru mediul înconjurător.
                 </p>
               </div>
             )}

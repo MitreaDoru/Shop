@@ -1,29 +1,30 @@
-import { Outlet } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { addProduct, ingredients } from "./features/actions/productSlice";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { loginUser, logoutUser } from "./features/actions/authSlice";
-import { useAuthCheck } from "./features/actions/useAuthCheck";
+import { addProduct, ingredients } from "../features/actions/productSlice";
+import { loginUser, logoutUser } from "../features/actions/authSlice";
+import type { AppDispatch } from "../app/store";
 
-function App() {
-  const dispatch = useDispatch();
+export const useAppInit = () => {
   const [loading, setLoading] = useState(true);
-
-  useAuthCheck();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     const initAppData = async () => {
       const token = localStorage.getItem("token");
+      const baseUrl = import.meta.env.VITE_BE_URL;
+
       try {
-        const dataRes = await fetch(`${import.meta.env.VITE_BE_URL}/data`);
+        const dataRes = await fetch(`${baseUrl}/data`);
         const data = await dataRes.json();
+
         dispatch(addProduct(data.products));
         dispatch(ingredients(data.ingredients.ingredients));
 
         if (token && token !== "null") {
-          const userRes = await fetch(`${import.meta.env.VITE_BE_URL}/user`, {
+          const userRes = await fetch(`${baseUrl}/user`, {
             headers: { Authorization: `Bearer ${token.replace(/["]/g, "")}` },
           });
+
           if (userRes.ok) {
             const userData = await userRes.json();
             dispatch(loginUser(userData.user));
@@ -37,16 +38,9 @@ function App() {
         setLoading(false);
       }
     };
+
     initAppData();
   }, [dispatch]);
 
-  if (loading) return <div className="loading">Se încarcă...</div>;
-
-  return (
-    <div className="app">
-      <Outlet />
-    </div>
-  );
-}
-
-export default App;
+  return { loading };
+};
